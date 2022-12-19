@@ -6,9 +6,9 @@ public class Deck {
 	private int currentcard;
 	private Random rd = new Random(System.currentTimeMillis());
 	
-	public Deck {
-		String[] suit = {"♥", "♦", "♣", "♠"}
-		String[] value = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
+	public Deck() {
+		String[] suit = {"Hearts", "Diamonds", "Clubs", "Spades"};
+		String[] value = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 		deck = new Cards[cardnumber];
 		for(int i=0; i<deck.length; i++) {
 			deck[i] = new Cards(suit[i/13], value[i%13]);
@@ -24,7 +24,7 @@ public class Deck {
 		}
 	}
 	
-	public Cards[] getDeck {
+	public Cards[] getDeck() {
 		return deck;
 	}
 }
