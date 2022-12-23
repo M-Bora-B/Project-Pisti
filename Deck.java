@@ -7,7 +7,7 @@ public class Deck {
 	private Random rd = new Random(System.currentTimeMillis());
 	
 	public Deck() {
-		String[] suit = {"Hearts", "Diamonds", "Clubs", "Spades"};
+		String[] suit = {"H", "D", "C", "S"};
 		String[] value = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 		deck = new Cards[cardnumber];
 		for(int i=0; i<deck.length; i++) {
