@@ -16,11 +16,15 @@ public class Game {
 	}
 	
 	public static Cards[] playCard(Cards[] board, Cards player) {
+	if(board[0] == null) {
+		board[0] = player;
+	} else {
 		for(int a=board.length-1; a>0; a--) {
 			board[a] = board[a-1];
 		}
 		board[0] = player;
-		return board;
+	}
+	return board;
 	}
 	
 	public static String easy(Cards a) {
@@ -91,13 +95,12 @@ public class Game {
 		choose = sc.nextInt();
 		switch(choose) {
 			case 1:
-			if(board[0].getValue() != player[0].getValue()) {
+			if(board[0] == null) {
 				board = playCard(board, player[0]);
-				System.out.println("1 Tetiklendi");
 				player[0] = null;
 				break;
 			}
-			if(board[0].getValue() == player[0].getValue()) {
+			if(board[0].getValue() == player[0].getValue() || player[0].getValue() == "J") {
 				board = playCard(board, player[0]);
 				pscore += gainPoint(board);
 				System.out.println("2 Tetiklendi" + pscore);
@@ -107,17 +110,77 @@ public class Game {
 				player[0] = null;
 				break;
 			}
-			if(player[0].getValue() == "J") {
-				if(board[0] == null) {
-					board = playCard(board, player[0]);
-					player[0] = null;
-					break;
-				} else {
-					board = playCard(board, player[0]);
-					pscore += gainPoint(board);
-					player[0] = null;
-					break;
-				}
+			if(board[0].getValue() != player[0].getValue()) {
+				board = playCard(board, player[0]);
+				System.out.println("1 Tetiklendi");
+				player[0] = null;
+				break;
+			}
+			case 2:
+			if(board[0] == null) {
+				board = playCard(board, player[1]);
+				player[1] = null;
+				break;
+			}
+			if(board[0].getValue() == player[1].getValue() || player[1].getValue() == "J") {
+				board = playCard(board, player[1]);
+				pscore += gainPoint(board);
+				System.out.println("2 Tetiklendi" + pscore);
+				for (int i = 0; i < board.length; i++) {
+					board[i] = null;
+					}
+				player[1] = null;
+				break;
+			}
+			if(board[0].getValue() != player[1].getValue()) {
+				board = playCard(board, player[1]);
+				System.out.println("1 Tetiklendi");
+				player[1] = null;
+				break;
+			}
+			case 3:
+			if(board[0] == null) {
+				board = playCard(board, player[2]);
+				player[2] = null;
+				break;
+			}
+			if(board[0].getValue() == player[2].getValue() || player[2].getValue() == "J") {
+				board = playCard(board, player[2]);
+				pscore += gainPoint(board);
+				System.out.println("2 Tetiklendi" + pscore);
+				for (int i = 0; i < board.length; i++) {
+					board[i] = null;
+					}
+				player[2] = null;
+				break;
+			}
+			if(board[0].getValue() != player[2].getValue()) {
+				board = playCard(board, player[2]);
+				System.out.println("1 Tetiklendi");
+				player[2] = null;
+				break;
+			}
+			case 4:
+			if(board[0] == null) {
+				board = playCard(board, player[3]);
+				player[3] = null;
+				break;
+			}
+			if(board[0].getValue() == player[3].getValue() || player[3].getValue() == "J") {
+				board = playCard(board, player[3]);
+				pscore += gainPoint(board);
+				System.out.println("2 Tetiklendi" + pscore);
+				for (int i = 0; i < board.length; i++) {
+					board[i] = null;
+					}
+				player[3] = null;
+				break;
+			}
+			if(board[0].getValue() != player[3].getValue()) {
+				board = playCard(board, player[3]);
+				System.out.println("1 Tetiklendi");
+				player[3] = null;
+				break;
 			}
 		}
 		}
