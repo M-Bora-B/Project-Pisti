@@ -12,6 +12,7 @@ public class Game {
 			if(board[a].getSuit() == "C" && board[a].getValue() == "2") score += 2;
 			else score += 1;
 		}
+		if(board[2] == null) score = 10;
 		return score;
 	}
 	
@@ -80,11 +81,12 @@ public class Game {
 		if(c<4) ai[c] = deck[c*2+1];
         else ai[c] = deck[c*2+5];	
 		}
+		int last = 0;
 		int count = 0;
 		int hand[] = {0, 1, 2, 3};
 		// zurnanın zırt dediği yer
 		int choose = 0;
-		while(choose<5) {
+		while(count<player.length) {
 		for(int d=0; d<board.length; d++) {
 			if(board[d] == null) continue;
 			System.out.print(easy(board[d]) + " ");
@@ -95,10 +97,6 @@ public class Game {
 		if(player[hand[2]] != null) System.out.println("3." + easy(player[hand[2]]));
 		if(player[hand[3]] != null) System.out.println("4." + easy(player[hand[3]]));
 		System.out.println(" ");
-		if(ai[hand[0]] != null) System.out.println("1." + easy(ai[hand[0]]));
-		if(ai[hand[1]] != null) System.out.println("2." + easy(ai[hand[1]]));
-		if(ai[hand[2]] != null) System.out.println("3." + easy(ai[hand[2]]));
-		if(ai[hand[3]] != null) System.out.println("4." + easy(ai[hand[3]]));
 		choose = sc.nextInt();
 		switch(choose) {
 			case 1:
@@ -110,16 +108,15 @@ public class Game {
 			if(board[0].getValue() == player[hand[0]].getValue() || player[hand[0]].getValue() == "J") {
 				board = playCard(board, player[hand[0]]);
 				pscore += gainPoint(board);
-				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
 				player[hand[0]] = null;
+				last = 1;
 				break;
 			}
 			if(board[0].getValue() != player[hand[0]].getValue()) {
-				board = playCard(board, player[hand[0]]);
-				System.out.println("1 Tetiklendi");
+				board = playCard(board, player[hand[0]]);				
 				player[hand[0]] = null;
 				break;
 			}
@@ -132,16 +129,15 @@ public class Game {
 			if(board[0].getValue() == player[hand[1]].getValue() || player[hand[1]].getValue() == "J") {
 				board = playCard(board, player[hand[1]]);
 				pscore += gainPoint(board);
-				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
 				player[hand[1]] = null;
+				last = 1;
 				break;
 			}
 			if(board[0].getValue() != player[hand[1]].getValue()) {
-				board = playCard(board, player[hand[1]]);
-				System.out.println("1 Tetiklendi");
+				board = playCard(board, player[hand[1]]);				
 				player[hand[1]] = null;
 				break;
 			}
@@ -154,16 +150,15 @@ public class Game {
 			if(board[0].getValue() == player[hand[2]].getValue() || player[hand[2]].getValue() == "J") {
 				board = playCard(board, player[hand[2]]);
 				pscore += gainPoint(board);
-				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
 				player[hand[2]] = null;
+				last = 1;
 				break;
 			}
 			if(board[0].getValue() != player[hand[2]].getValue()) {
 				board = playCard(board, player[hand[2]]);
-				System.out.println("1 Tetiklendi");
 				player[hand[2]] = null;
 				break;
 			}
@@ -176,16 +171,15 @@ public class Game {
 			if(board[0].getValue() == player[hand[3]].getValue() || player[hand[3]].getValue() == "J") {
 				board = playCard(board, player[hand[3]]);
 				pscore += gainPoint(board);
-				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
 				player[hand[3]] = null;
+				last = 1;
 				break;
 			}
 			if(board[0].getValue() != player[hand[3]].getValue()) {
-				board = playCard(board, player[hand[3]]);
-				System.out.println("1 Tetiklendi");
+				board = playCard(board, player[hand[3]]);				
 				player[hand[3]] = null;
 				break;
 			}
@@ -196,12 +190,13 @@ public class Game {
 				if(ai[hand[z]] == null) continue;
 				if(ai[hand[z]].getValue() == board[0].getValue() || ai[hand[z]].getValue() == "J") {
 					playCard(board, ai[hand[z]]);
-					gainPoint(board);
+					ascore += gainPoint(board);
 					for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
 					ai[hand[z]] = null;
 					flag = true;
+					last = 0;
 					break;
 				}
 			}
@@ -234,6 +229,23 @@ public class Game {
 			hand[2] += 4;
 			hand[3] += 4;
 		}
+		}
+		if(last==0) ascore += gainPoint(board);
+		if(last==1) pscore += gainPoint(board);
+		if(ascore>pscore) {
+			System.out.println("You lost...");
+			System.out.println("AI:" + ascore);
+			System.out.println("You:" + pscore);
+		}
+		if(ascore<pscore) {
+			System.out.println("You won!");
+			System.out.println("You:" + pscore);
+			System.out.println("AI:" + ascore);
+		}
+		if(ascore==pscore) {
+			System.out.println("Wow, it's a tie!");
+			System.out.println("You:" + pscore);
+			System.out.println("AI:" + ascore);
 		}
 	}
 }
