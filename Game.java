@@ -80,6 +80,8 @@ public class Game {
 		if(c<4) ai[c] = deck[c*2+1];
         else ai[c] = deck[c*2+5];	
 		}
+		int count = 0;
+		int hand[] = {0, 1, 2, 3};
 		// zurnanın zırt dediği yer
 		int choose = 0;
 		while(choose<5) {
@@ -88,100 +90,149 @@ public class Game {
 			System.out.print(easy(board[d]) + " ");
 		}
 		System.out.println(" ");
-		for(int p=0; p<4; p++) {
-			if(player[p] == null) continue;
-			System.out.println((p+1) + "." + easy(player[p]));
-		}
+		if(player[hand[0]] != null) System.out.println("1." + easy(player[hand[0]]));
+		if(player[hand[1]] != null) System.out.println("2." + easy(player[hand[1]]));
+		if(player[hand[2]] != null) System.out.println("3." + easy(player[hand[2]]));
+		if(player[hand[3]] != null) System.out.println("4." + easy(player[hand[3]]));
+		System.out.println(" ");
+		if(ai[hand[0]] != null) System.out.println("1." + easy(ai[hand[0]]));
+		if(ai[hand[1]] != null) System.out.println("2." + easy(ai[hand[1]]));
+		if(ai[hand[2]] != null) System.out.println("3." + easy(ai[hand[2]]));
+		if(ai[hand[3]] != null) System.out.println("4." + easy(ai[hand[3]]));
 		choose = sc.nextInt();
 		switch(choose) {
 			case 1:
 			if(board[0] == null) {
-				board = playCard(board, player[0]);
-				player[0] = null;
+				board = playCard(board, player[hand[0]]);
+				player[hand[0]] = null;
 				break;
 			}
-			if(board[0].getValue() == player[0].getValue() || player[0].getValue() == "J") {
-				board = playCard(board, player[0]);
+			if(board[0].getValue() == player[hand[0]].getValue() || player[hand[0]].getValue() == "J") {
+				board = playCard(board, player[hand[0]]);
 				pscore += gainPoint(board);
 				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
-				player[0] = null;
+				player[hand[0]] = null;
 				break;
 			}
-			if(board[0].getValue() != player[0].getValue()) {
-				board = playCard(board, player[0]);
+			if(board[0].getValue() != player[hand[0]].getValue()) {
+				board = playCard(board, player[hand[0]]);
 				System.out.println("1 Tetiklendi");
-				player[0] = null;
+				player[hand[0]] = null;
 				break;
 			}
 			case 2:
 			if(board[0] == null) {
-				board = playCard(board, player[1]);
-				player[1] = null;
+				board = playCard(board, player[hand[1]]);
+				player[hand[1]] = null;
 				break;
 			}
-			if(board[0].getValue() == player[1].getValue() || player[1].getValue() == "J") {
-				board = playCard(board, player[1]);
+			if(board[0].getValue() == player[hand[1]].getValue() || player[hand[1]].getValue() == "J") {
+				board = playCard(board, player[hand[1]]);
 				pscore += gainPoint(board);
 				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
-				player[1] = null;
+				player[hand[1]] = null;
 				break;
 			}
-			if(board[0].getValue() != player[1].getValue()) {
-				board = playCard(board, player[1]);
+			if(board[0].getValue() != player[hand[1]].getValue()) {
+				board = playCard(board, player[hand[1]]);
 				System.out.println("1 Tetiklendi");
-				player[1] = null;
+				player[hand[1]] = null;
 				break;
 			}
 			case 3:
 			if(board[0] == null) {
-				board = playCard(board, player[2]);
-				player[2] = null;
+				board = playCard(board, player[hand[2]]);
+				player[hand[2]] = null;
 				break;
 			}
-			if(board[0].getValue() == player[2].getValue() || player[2].getValue() == "J") {
-				board = playCard(board, player[2]);
+			if(board[0].getValue() == player[hand[2]].getValue() || player[hand[2]].getValue() == "J") {
+				board = playCard(board, player[hand[2]]);
 				pscore += gainPoint(board);
 				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
-				player[2] = null;
+				player[hand[2]] = null;
 				break;
 			}
-			if(board[0].getValue() != player[2].getValue()) {
-				board = playCard(board, player[2]);
+			if(board[0].getValue() != player[hand[2]].getValue()) {
+				board = playCard(board, player[hand[2]]);
 				System.out.println("1 Tetiklendi");
-				player[2] = null;
+				player[hand[2]] = null;
 				break;
 			}
 			case 4:
 			if(board[0] == null) {
-				board = playCard(board, player[3]);
-				player[3] = null;
+				board = playCard(board, player[hand[3]]);
+				player[hand[3]] = null;
 				break;
 			}
-			if(board[0].getValue() == player[3].getValue() || player[3].getValue() == "J") {
-				board = playCard(board, player[3]);
+			if(board[0].getValue() == player[hand[3]].getValue() || player[hand[3]].getValue() == "J") {
+				board = playCard(board, player[hand[3]]);
 				pscore += gainPoint(board);
 				System.out.println("2 Tetiklendi" + pscore);
 				for (int i = 0; i < board.length; i++) {
 					board[i] = null;
 					}
-				player[3] = null;
+				player[hand[3]] = null;
 				break;
 			}
-			if(board[0].getValue() != player[3].getValue()) {
-				board = playCard(board, player[3]);
+			if(board[0].getValue() != player[hand[3]].getValue()) {
+				board = playCard(board, player[hand[3]]);
 				System.out.println("1 Tetiklendi");
-				player[3] = null;
+				player[hand[3]] = null;
 				break;
 			}
+		}
+		boolean flag = false;
+		if(board[0] != null) {
+			for(int z=0; z<hand.length; z++) {
+				if(ai[hand[z]] == null) continue;
+				if(ai[hand[z]].getValue() == board[0].getValue() || ai[hand[z]].getValue() == "J") {
+					playCard(board, ai[hand[z]]);
+					gainPoint(board);
+					for (int i = 0; i < board.length; i++) {
+					board[i] = null;
+					}
+					ai[hand[z]] = null;
+					flag = true;
+					break;
+				}
+			}
+		}
+		if(board[0] == null && flag == false) {
+			for(int z=0; z<hand.length; z++) {
+				if(ai[hand[z]] != null) {
+					playCard(board, ai[hand[z]]);
+					ai[hand[z]] = null;
+					flag = true;
+					break;
+				}
+			}
+		}
+		if(!flag) {
+			for(int z=0; z<hand.length; z++) {
+				if(ai[hand[z]] != null) {
+					playCard(board, ai[hand[z]]);
+					ai[hand[z]] = null;
+					break;
+				}
+			}
+		}
+		
+		System.out.println("------------------------");
+		count++;
+		if(count%4 == 0 && count != 0) {
+			hand[0] += 4;
+			hand[1] += 4;
+			hand[2] += 4;
+			hand[3] += 4;
 		}
 		}
 	}
