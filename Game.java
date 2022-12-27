@@ -8,11 +8,11 @@ public class Game {
 			if(board[a] == null) {
 				continue;
 			}
-			if(board[a].getSuit() == "D" && board[a].getValue() == "10") score += 3;
-			if(board[a].getSuit() == "C" && board[a].getValue() == "2") score += 2;
-			else score += 1;
+			if(board[a].getSuit() == "D" && board[a].getValue() == "10") score += 2;
+			if(board[a].getSuit() == "C" && board[a].getValue() == "2") score += 1;
+			score += 1;
 		}
-		if(board[2] == null) score = 10;
+		if(board[2] == null && board[0].getValue() == board[1].getValue()) score = 10;
 		return score;
 	}
 	
@@ -41,28 +41,25 @@ public class Game {
         deck = temp.getDeck();
         Cards[] cutdeck = new Cards[cardnum];
 		
-		
+		int hold = 0;
         int x = 0;
-        boolean inputValid = false;
-        while (!inputValid) {
+        while (true) {
             try {
                 System.out.println("Please enter an integer value to cut the deck: ");
                 x = sc.nextInt();
-                inputValid = true;
+				for(int a = 0; a < cardnum; a++) {
+					if(a >= cardnum-x) {
+						cutdeck[a] = deck[hold];
+						hold++;
+						} else cutdeck[a] = deck[a+x];
+						}
+						deck = cutdeck;
+						break;
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter a valid integer value.");
                 sc.nextLine(); 
             }
         }
-        int hold = 0;
-        for(int a = 0; a < cardnum; a++) {
-            if(a >= cardnum-x) {
-                cutdeck[a] = deck[hold];
-                hold++;
-            } else cutdeck[a] = deck[a+x];
-        }
-		deck = cutdeck;
-		
 		
 		Cards[] player = new Cards[24]; 
 		Cards[] ai = new Cards[24];
@@ -86,6 +83,8 @@ public class Game {
 		int hand[] = {0, 1, 2, 3};
 		// zurnanın zırt dediği yer
 		int choose = 0;
+		int aicard = 0;
+		
 		while(count<player.length) {
 		for(int d=0; d<board.length; d++) {
 			if(board[d] == null) continue;
@@ -96,6 +95,11 @@ public class Game {
 		if(player[hand[1]] != null) System.out.println("2." + easy(player[hand[1]]));
 		if(player[hand[2]] != null) System.out.println("3." + easy(player[hand[2]]));
 		if(player[hand[3]] != null) System.out.println("4." + easy(player[hand[3]]));
+		System.out.println(" ");
+		if(ai[hand[0]] != null) System.out.println("1." + easy(ai[hand[0]]));
+		if(ai[hand[1]] != null) System.out.println("2." + easy(ai[hand[1]]));
+		if(ai[hand[2]] != null) System.out.println("3." + easy(ai[hand[2]]));
+		if(ai[hand[3]] != null) System.out.println("4." + easy(ai[hand[3]]));
 		System.out.println(" ");
 		choose = sc.nextInt();
 		switch(choose) {
@@ -192,6 +196,9 @@ public class Game {
 					playCard(board, ai[hand[z]]);
 					ascore += gainPoint(board);
 					for (int i = 0; i < board.length; i++) {
+					if(board[i] != null) {
+					aicard++;
+					}
 					board[i] = null;
 					}
 					ai[hand[z]] = null;
@@ -229,9 +236,21 @@ public class Game {
 			hand[2] += 4;
 			hand[3] += 4;
 		}
+		System.out.println(ascore);
+		System.out.println(pscore);
+		System.out.println(aicard);
+		System.out.println(last);
 		}
-		if(last==0) ascore += gainPoint(board);
-		if(last==1) pscore += gainPoint(board);
+		for(int i=0; i<board.length; i++) {
+			if(last == 1) break;
+			if(last == 0) {
+				if(board[i] != null) aicard++;
+			}
+		}
+		if(last == 0) ascore += gainPoint(board);
+		if(last == 1) pscore += gainPoint(board);
+		if(aicard>26) ascore += 3;
+		if(aicard<26) pscore += 3;
 		if(ascore>pscore) {
 			System.out.println("You lost...");
 			System.out.println("AI:" + ascore);
