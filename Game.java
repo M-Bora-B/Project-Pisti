@@ -101,12 +101,24 @@ public class Game {
 		if(ai[hand[2]] != null) System.out.println("3." + easy(ai[hand[2]]));
 		if(ai[hand[3]] != null) System.out.println("4." + easy(ai[hand[3]]));
 		System.out.println(" ");
-		choose = sc.nextInt();
+		boolean check = true;
+		while(check) {
+			while(true) {
+				try{
+		        choose = sc.nextInt();
+				break;
+				} catch(Exception e) {
+					System.out.println("Enter a valid input");
+					sc.nextLine();
+				}
+			}
 		switch(choose) {
 			case 1:
+			if(player[hand[0]] == null) break;
 			if(board[0] == null) {
 				board = playCard(board, player[hand[0]]);
 				player[hand[0]] = null;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() == player[hand[0]].getValue() || player[hand[0]].getValue() == "J") {
@@ -117,17 +129,21 @@ public class Game {
 					}
 				player[hand[0]] = null;
 				last = 1;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() != player[hand[0]].getValue()) {
 				board = playCard(board, player[hand[0]]);				
 				player[hand[0]] = null;
+				check = false;
 				break;
 			}
 			case 2:
+			if(player[hand[1]] == null) break;
 			if(board[0] == null) {
 				board = playCard(board, player[hand[1]]);
 				player[hand[1]] = null;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() == player[hand[1]].getValue() || player[hand[1]].getValue() == "J") {
@@ -138,17 +154,21 @@ public class Game {
 					}
 				player[hand[1]] = null;
 				last = 1;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() != player[hand[1]].getValue()) {
 				board = playCard(board, player[hand[1]]);				
 				player[hand[1]] = null;
+				check = false;
 				break;
 			}
 			case 3:
+			if(player[hand[2]] == null) break;
 			if(board[0] == null) {
 				board = playCard(board, player[hand[2]]);
 				player[hand[2]] = null;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() == player[hand[2]].getValue() || player[hand[2]].getValue() == "J") {
@@ -159,17 +179,21 @@ public class Game {
 					}
 				player[hand[2]] = null;
 				last = 1;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() != player[hand[2]].getValue()) {
 				board = playCard(board, player[hand[2]]);
 				player[hand[2]] = null;
+				check = false;
 				break;
 			}
 			case 4:
+			if(player[hand[3]] == null) break;
 			if(board[0] == null) {
 				board = playCard(board, player[hand[3]]);
 				player[hand[3]] = null;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() == player[hand[3]].getValue() || player[hand[3]].getValue() == "J") {
@@ -180,13 +204,16 @@ public class Game {
 					}
 				player[hand[3]] = null;
 				last = 1;
+				check = false;
 				break;
 			}
 			if(board[0].getValue() != player[hand[3]].getValue()) {
 				board = playCard(board, player[hand[3]]);				
 				player[hand[3]] = null;
+				check = false;
 				break;
 			}
+		}
 		}
 		boolean flag = false;
 		if(board[0] != null) {
@@ -247,8 +274,8 @@ public class Game {
 				if(board[i] != null) aicard++;
 			}
 		}
-		if(last == 0) ascore += gainPoint(board);
-		if(last == 1) pscore += gainPoint(board);
+		if(last == 0 && board[0] != null) ascore += gainPoint(board);
+		if(last == 1 && board[0] != null) pscore += gainPoint(board);
 		if(aicard>26) ascore += 3;
 		if(aicard<26) pscore += 3;
 		if(ascore>pscore) {
