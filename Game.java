@@ -1,4 +1,8 @@
 import java.util.Scanner;
+import java.util.Formatter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Game {
 	
@@ -12,7 +16,9 @@ public class Game {
 			if(board[a].getSuit() == "C" && board[a].getValue() == "2") score += 1;
 			score += 1;
 		}
+		if(board[0] != null && board[1] != null) {
 		if(board[2] == null && board[0].getValue() == board[1].getValue()) score = 10;
+		}
 		return score;
 	}
 	
@@ -40,7 +46,6 @@ public class Game {
         temp.Shuffle();
         deck = temp.getDeck();
         Cards[] cutdeck = new Cards[cardnum];
-		
 		int hold = 0;
         int x = 0;
         while (true) {
@@ -60,7 +65,6 @@ public class Game {
                 sc.nextLine(); 
             }
         }
-		
 		Cards[] player = new Cards[24]; 
 		Cards[] ai = new Cards[24];
 		Cards[] board = new Cards[52];
@@ -81,10 +85,8 @@ public class Game {
 		int last = 0;
 		int count = 0;
 		int hand[] = {0, 1, 2, 3};
-		// zurnanın zırt dediği yer
 		int choose = 0;
 		int aicard = 0;
-		
 		while(count<player.length) {
 		for(int d=0; d<board.length; d++) {
 			if(board[d] == null) continue;
@@ -95,14 +97,9 @@ public class Game {
 		if(player[hand[1]] != null) System.out.println("2." + easy(player[hand[1]]));
 		if(player[hand[2]] != null) System.out.println("3." + easy(player[hand[2]]));
 		if(player[hand[3]] != null) System.out.println("4." + easy(player[hand[3]]));
-		System.out.println(" ");
-		if(ai[hand[0]] != null) System.out.println("1." + easy(ai[hand[0]]));
-		if(ai[hand[1]] != null) System.out.println("2." + easy(ai[hand[1]]));
-		if(ai[hand[2]] != null) System.out.println("3." + easy(ai[hand[2]]));
-		if(ai[hand[3]] != null) System.out.println("4." + easy(ai[hand[3]]));
-		System.out.println(" ");
 		boolean check = true;
 		while(check) {
+			System.out.println("Enter the number of card you want to play");
 			while(true) {
 				try{
 		        choose = sc.nextInt();
@@ -254,7 +251,6 @@ public class Game {
 				}
 			}
 		}
-		
 		System.out.println("------------------------");
 		count++;
 		if(count%4 == 0 && count != 0) {
@@ -263,10 +259,6 @@ public class Game {
 			hand[2] += 4;
 			hand[3] += 4;
 		}
-		System.out.println(ascore);
-		System.out.println(pscore);
-		System.out.println(aicard);
-		System.out.println(last);
 		}
 		for(int i=0; i<board.length; i++) {
 			if(last == 1) break;
@@ -292,6 +284,61 @@ public class Game {
 			System.out.println("Wow, it's a tie!");
 			System.out.println("You:" + pscore);
 			System.out.println("AI:" + ascore);
+		}
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your name: ");
+        String name = scanner.next();
+        try (Formatter formatter = new Formatter(new FileWriter("scores.txt", true))) {
+            formatter.format("%s %d\n", name, pscore);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Player[] players = new Player[10];
+        try (Scanner fileScanner = new Scanner(Paths.get("scores.txt"))) {
+            int index = 0;
+            while (fileScanner.hasNext() && index < players.length) {
+                String fileName = fileScanner.next();
+                int fileScore = fileScanner.nextInt();
+                players[index] = new Player(fileName, fileScore);
+                index++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int lowestScoreIndex = -1;
+        int lowestScore = 10000;
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null && players[i].getScore() < lowestScore) {
+                lowestScoreIndex = i;
+                lowestScore = players[i].getScore();
+            }
+        }
+
+        if (lowestScoreIndex != -1 && pscore > lowestScore) {
+            players[lowestScoreIndex] = new Player(name, pscore);
+        }
+        for (int i = 0; i < players.length; i++) {
+            for (int j = i + 1; j < players.length; j++) {
+                if (players[i] != null && players[j] != null && players[i].getScore() < players[j].getScore()) {
+                    Player ptemp = players[i];
+                    players[i] = players[j];
+                    players[j] = ptemp;
+                }
+            }
+        }
+        try (Formatter formatter = new Formatter(new FileWriter("scores.txt"))) {
+            for (int i = 0; i < players.length; i++) {
+                if (players[i] != null) {
+                    formatter.format("%s %d\n", players[i].getName(), players[i].getScore());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                System.out.println(players[i].getName() + ": " + players[i].getScore());
+			}
 		}
 	}
 }
